@@ -49,3 +49,49 @@ BEGIN
     WHERE ctr.content_id = p_content_id;
 END;
 $$ LANGUAGE plpgsql;
+
+--içerik üreticisisn doğrulama
+CREATE OR REPLACE FUNCTION is_creator(p_creator_id uuid)
+RETURNS boolean AS $$
+DECLARE
+    existC boolean;
+BEGIN
+    SELECT EXISTS (
+        SELECT 1 
+        FROM content_creators 
+        WHERE user_id = p_creator_id
+    )
+    INTO existC;
+
+    RETURN existC;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+--admin rolu dogrulama
+create or replace function isAdmin(p_user_id uuid)
+returns boolean AS $$
+declare
+    existC boolean;
+begin
+	return exists(
+	select 1 from users u 
+	join system_roles r on r.id=u.role_id
+	where u.id=p.user_id and r.name='ADMIN'
+	);
+end;
+$$ LANGUAGE plpgsql;
+
+
+--kullanicinin abonellıgı varmı kontrol et
+create or replace function has_subscription(p_user_id uuid)
+returns boolean as $$
+begin
+	return exists(
+	select 1
+	from user_subscription_relations 
+	where user_id=p_user_id
+	);
+end;
+$$ LANGUAGE plpgsql;
