@@ -1,0 +1,138 @@
+.search-bar-container {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+  margin: 0 1rem;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.6rem 1rem 0.6rem 2.5rem;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.dark-mode .search-input {
+  background: #3a3a3a;
+  color: #f0f0f0;
+  border-color: #555;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.dark-mode .search-results {
+  background: #2a2a2a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.results-loading,
+.no-results {
+  padding: 1rem;
+  text-align: center;
+  color: #999;
+}
+
+.results-section {
+  border-bottom: 1px solid #eee;
+}
+
+.dark-mode .results-section {
+  border-bottom-color: #444;
+}
+
+.results-section:last-child {
+  border-bottom: none;
+}
+
+.results-section h4 {
+  padding: 0.75rem 1rem;
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #667eea;
+  background: #f9f9f9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dark-mode .results-section h4 {
+  background: #3a3a3a;
+  color: #8fa3ff;
+}
+
+.result-item {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: #333;
+}
+
+.dark-mode .result-item {
+  color: #f0f0f0;
+}
+
+.result-item:hover {
+  background: #f5f5f5;
+}
+
+.dark-mode .result-item:hover {
+  background: #3a3a3a;
+}
+
+.result-icon {
+  font-size: 1.1rem;
+}
+
+.result-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .search-bar-container {
+    max-width: none;
+    margin: 0.5rem;
+  }
+
+  .search-results {
+    max-height: 300px;
+  }
+}
