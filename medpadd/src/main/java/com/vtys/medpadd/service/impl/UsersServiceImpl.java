@@ -2,6 +2,7 @@ package com.vtys.medpadd.service.impl;
 
 import com.vtys.medpadd.entity.Users;
 import com.vtys.medpadd.repository.UsersRepository;
+import com.vtys.medpadd.service.SystemRolesService;
 import com.vtys.medpadd.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,14 @@ import java.util.UUID;
 public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
+    private final SystemRolesService systemRolesService;
 
     @Override
     public Users save(Users user) {
+        // Eğer kullanıcının rolü yoksa, varsayılan "Kullanıcı" rolünü ata
+        if (user.getSystemRoles() == null) {
+            user.setSystemRoles(systemRolesService.findOrCreateDefaultRole());
+        }
         return usersRepository.save(user);
     }
 

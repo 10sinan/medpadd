@@ -16,4 +16,6 @@ public interface SystemRolesService {
     void deleteById(UUID id);
 
     Optional<SystemRoles> findByRoleName(String roleName);
+
+    SystemRoles findOrCreateDefaultRole();
 }

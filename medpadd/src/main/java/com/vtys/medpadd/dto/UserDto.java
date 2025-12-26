@@ -23,6 +23,7 @@ public class UserDto extends BaseDto {
     private String email;
     private String password;
     private UUID roleId;
+    private SystemRoleDto systemRoles;
     private LocalDate birthday;
     private UUID profilePicId;
 }

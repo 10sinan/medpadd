@@ -40,4 +40,15 @@ public class SystemRolesServiceImpl implements SystemRolesService {
     public Optional<SystemRoles> findByRoleName(String roleName) {
         return systemRolesRepository.findByRoleName(roleName);
     }
+
+    @Override
+    public SystemRoles findOrCreateDefaultRole() {
+        return systemRolesRepository.findByRoleName("Kullanıcı")
+                .orElseGet(() -> {
+                    SystemRoles defaultRole = new SystemRoles();
+                    defaultRole.setRoleName("Kullanıcı");
+                    defaultRole.setDescription("Varsayılan kullanıcı rolü");
+                    return systemRolesRepository.save(defaultRole);
+                });
+    }
 }
