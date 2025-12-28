@@ -1,22 +1,14 @@
 package com.vtys.medpadd.dto;
 
-import com.vtys.medpadd.common.dto.BaseDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class RatingDto extends BaseDto {
-    private UUID id;
-    private Double rating;
-    private UUID userId;
-    private UUID contentId;
+public record RatingDto(
+        UUID id,
+        UUID contentId,
+        UUID userId,
+        BigDecimal rating,
+        OffsetDateTime createdAt,
+        OffsetDateTime updatedAt) {
 }

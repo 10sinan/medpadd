@@ -1,21 +1,8 @@
 package com.vtys.medpadd.dto;
 
-import com.vtys.medpadd.common.dto.BaseDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
 import java.util.UUID;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ContentTagRelationDto extends BaseDto {
-    private UUID id;
-    private UUID contentId;
-    private UUID tagId;
+public record ContentTagRelationDto(
+        UUID tagId,
+        UUID contentId) {
 }

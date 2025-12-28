@@ -1,22 +1,10 @@
 package com.vtys.medpadd.dto;
 
-import com.vtys.medpadd.common.dto.BaseDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
 import java.util.UUID;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ComicPageDto extends BaseDto {
-    private UUID id;
-    private UUID comicId;
-    private String pageUrl;
-    private Integer page;
+public record ComicPageDto(
+        UUID id,
+        UUID comicId,
+        String pageUrl,
+        Integer pageNumber) {
 }

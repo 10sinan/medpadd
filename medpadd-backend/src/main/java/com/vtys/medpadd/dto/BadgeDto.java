@@ -1,24 +1,15 @@
 package com.vtys.medpadd.dto;
 
-import com.vtys.medpadd.common.dto.BaseDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class BadgeDto extends BaseDto {
-    private UUID id;
-    private UUID iconId;
-    private String color;
-    private String code;
-    private String name;
-    private String description;
+public record BadgeDto(
+        UUID id,
+        UUID iconId,
+        String code,
+        String color,
+        String name,
+        String description,
+        OffsetDateTime createdAt,
+        OffsetDateTime updatedAt) {
 }

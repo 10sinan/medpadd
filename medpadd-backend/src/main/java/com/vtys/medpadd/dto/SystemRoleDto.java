@@ -1,21 +1,11 @@
 package com.vtys.medpadd.dto;
 
-import com.vtys.medpadd.common.dto.BaseDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class SystemRoleDto extends BaseDto {
-    private UUID id;
-    private String roleName;
-    private String description;
+public record SystemRoleDto(
+        UUID id,
+        String name,
+        String description,
+        OffsetDateTime createdAt) {
 }

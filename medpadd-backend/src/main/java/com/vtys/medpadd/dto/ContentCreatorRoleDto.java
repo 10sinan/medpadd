@@ -1,22 +1,13 @@
 package com.vtys.medpadd.dto;
 
-import com.vtys.medpadd.common.dto.BaseDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ContentCreatorRoleDto extends BaseDto {
-    private UUID id;
-    private String name;
-    private String code;
-    private String description;
+public record ContentCreatorRoleDto(
+        UUID id,
+        String code,
+        String name,
+        String description,
+        OffsetDateTime createdAt,
+        OffsetDateTime updatedAt) {
 }

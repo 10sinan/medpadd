@@ -1,22 +1,11 @@
 package com.vtys.medpadd.dto;
 
-import com.vtys.medpadd.common.dto.BaseDto;
-import com.vtys.medpadd.common.dto.ContentItem;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ComicContentDto extends BaseDto implements ContentItem {
-    private UUID id;
-    private UUID contentId;
-    private UUID comicPageId;
+public record ComicContentDto(
+        UUID id,
+        UUID contentId,
+        OffsetDateTime createdAt,
+        OffsetDateTime updatedAt) {
 }
