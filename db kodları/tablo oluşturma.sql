@@ -126,16 +126,28 @@ CREATE TABLE IF NOT EXISTS content_creators(
 );
 
 --Sistem loglarının tablosu
-CREATE TABLE IF NOT EXISTS system_logs(
-	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-	user_id UUID,
-
-	log TEXT NOT NULL,
-
-	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-
-	CONSTRAINT fk_syslogs_user FOREIGN KEY (user_id)
-	REFERENCES users(id)
+CREATE TABLE IF NOT EXISTS audit_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    
+    -- İşlemi yapan kişi
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    
+    -- İşlem türü: INSERT, UPDATE, DELETE, LOGIN, LOGOUT
+    action VARCHAR(20) NOT NULL,
+    
+    -- Hangi tablo etkilendi? (users, contents vb.)
+    target_table VARCHAR(50) NOT NULL,
+    
+    -- Etkilenen satırın ID'si
+    target_id UUID NOT NULL,
+    
+    -- Değişimden önceki veri (JSONB)
+    old_values JSONB,
+    
+    -- Değişimden sonraki veri (JSONB)
+    new_values JSONB,
+    
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 --Şikayetlerin tablosu
