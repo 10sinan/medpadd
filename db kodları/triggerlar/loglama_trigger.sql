@@ -1,4 +1,3 @@
-
 --bu trigger icerik tablosunda insert, update veya delete islemi yapildiginda
 --audit_logs tablosuna ilgili islemi loglar
 
@@ -24,7 +23,7 @@ begin
 
 	insert into audit_logs (
 		user_id,
-		actionn,
+		action,
 		target_table,
 		target_id,
 		old_values,
@@ -53,42 +52,44 @@ execute function trg_icerik_loglama();
 
 
 --test---------------------------
-select actionn, target_table, old_values, new_values
-from audit_logs
+select action, target_table, old_values, new_values
+from audit_logs;
 
 ------------------------------------------------------------------------------------------------
-create or replace function trg_yorum_guncelle()
-returns trigger
-language plpgsql
-as $$
-declare
-	userr_id uuid;--yorum yapan kullanicinin id'si
-begin
-	if tg_op = 'DELETE' then--yorum yapan kullanicinin id'si silinmeden once al
-		userr_id := old.user_id;
-	else
-		userr_id := new.user_id;
-	end if;
+CREATE OR REPLACE FUNCTION trg_yorum_guncelle()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_user_id UUID;
+BEGIN
+    -- İşlem türüne göre user_id'yi al
+    IF TG_OP = 'DELETE' THEN
+        v_user_id := OLD.user_id;
+    ELSE
+        v_user_id := NEW.user_id;
+    END IF;
 
-	insert into audit_logs (--loglama islemi
-		user_id,
-		actionn,
-		target_table,
-		target_id,
-		old_values,
-		new_values
-	)
-	values (
-		v_user_id,
-		tg_op,
-		tg_table_name,
-		coalesce(new.id, old.id),
-		case when tg_op in ('UPDATE','DELETE') then to_jsonb(old) end,
-		case when tg_op in ('INSERT','UPDATE') then to_jsonb(new) end
-	);
+    -- Audit Logs tablosuna ekle
+    INSERT INTO audit_logs (
+        user_id,
+        action,
+        target_table,
+        target_id,
+        old_values,
+        new_values
+    )
+    VALUES (
+        v_user_id,
+        TG_OP,
+        TG_TABLE_NAME,
+        COALESCE(NEW.id, OLD.id),
+        CASE WHEN TG_OP IN ('UPDATE','DELETE') THEN to_jsonb(OLD) END,
+        CASE WHEN TG_OP IN ('INSERT','UPDATE') THEN to_jsonb(NEW) END
+    );
 
-	return null;
-end;
+    RETURN NULL;
+END;
 $$;
 
 
@@ -100,43 +101,41 @@ for each row
 execute function trg_yorum_guncelle();
 
 ------------------------------------------------------------------------------------------------
-create or replace function trg_icerikUrt_logla()
-returns trigger
-language plpgsql
-as $$
-declare
-	userr_id uuid;
-begin
-	-- content_creator silinmeden önce user_id'yi al
-	if tg_op = 'DELETE' then
-		userr_id := old.user_id;
-	else
-		userr_id := new.user_id;
-	end if;
+CREATE OR REPLACE FUNCTION trg_icerikUrt_logla()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_user_id UUID; -- Değişken adı standart: v_user_id
+BEGIN
+    -- İşlem türüne göre user_id'yi doğru yerden al
+    IF TG_OP = 'DELETE' THEN
+        v_user_id := OLD.user_id;
+    ELSE
+        v_user_id := NEW.user_id;
+    END IF;
 
-	insert into audit_logs (
-		user_id,
-		actionn,
-		target_table,
-		target_id,
-		old_values,
-		new_values
-	)
-	values (
-		v_user_id,
-		tg_op,
-		tg_table_name,
-		coalesce(new.id, old.id),
-		case when tg_op in ('UPDATE','DELETE') then to_jsonb(old) end,
-		case when tg_op in ('INSERT','UPDATE') then to_jsonb(new) end
-	);
+    -- Log tablosuna ekle
+    INSERT INTO audit_logs (
+        user_id,
+        action,
+        target_table,
+        target_id,
+        old_values,
+        new_values
+    )
+    VALUES (
+        v_user_id, -- Artık yukarıdaki v_user_id ile eşleşiyor
+        TG_OP,
+        TG_TABLE_NAME,
+        COALESCE(NEW.id, OLD.id),
+        CASE WHEN TG_OP IN ('UPDATE','DELETE') THEN to_jsonb(OLD) END,
+        CASE WHEN TG_OP IN ('INSERT','UPDATE') THEN to_jsonb(NEW) END
+    );
 
-	return null;
-end;
+    RETURN NULL;
+END;
 $$;
-
-
- 
 
 create trigger icerikUrt_logla
 after insert or update or delete

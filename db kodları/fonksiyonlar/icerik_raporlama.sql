@@ -43,9 +43,3 @@ as $$
 
 	where c.title ilike '%' || p_icerik_adi || '%';
 $$;
-
-
-
---------------------------------
-select *
-from icerik_raporlama('ilk icerik');

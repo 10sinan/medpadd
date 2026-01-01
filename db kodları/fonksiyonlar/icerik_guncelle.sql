@@ -51,6 +51,7 @@ BEGIN
     RAISE NOTICE 'Yazı içeriği (ID: %) başarıyla güncellendi.', p_content_id;
 END;
 $$;
+
 CREATE OR REPLACE PROCEDURE update_comic_content_details(
     p_content_id UUID,
     p_title TEXT DEFAULT NULL,
@@ -69,6 +70,7 @@ BEGIN
     RAISE NOTICE 'Karikatür içeriği (ID: %) ana bilgileri güncellendi.', p_content_id;
 END;
 $$;
+
 CREATE OR REPLACE PROCEDURE update_any_content_router(
     p_content_id UUID,
     p_title TEXT DEFAULT NULL,
@@ -102,13 +104,6 @@ BEGIN
     ELSE
         RAISE EXCEPTION 'Verilen ID (ID: %) ile eşleşen bir içerik türü bulunamadı veya ID geçersiz.', p_content_id;
     END IF;
-    
-    -- Opsiyonel: Log tablosuna kayıt atabilirsin (Schema'da audit_logs vardı)
-    INSERT INTO system_logs(user_id, log)
-    VALUES (
-        NULL, -- Prosedürü çağıran kullanıcı ID'si varsa buraya parametre olarak ekleyebiliriz
-        'İçerik güncellemesi yapıldı. Content ID: ' || p_content_id
-    );
 
 END;
 $$;
